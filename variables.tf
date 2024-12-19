@@ -31,7 +31,7 @@ variable "ec2_instance_count" {
 }
 
 variable "key_name" {
-  default = "test"
+  default = "your-key-pair-name"
 }
 
 variable "project_name" {
