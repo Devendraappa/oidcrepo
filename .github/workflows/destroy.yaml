@@ -1,0 +1,51 @@
+name: Terraform Destroy
+
+on:
+  workflow_dispatch: # Allows you to manually trigger the destroy workflow from GitHub UI
+  # Optionally, you can also set this to run on push to a specific branch, e.g.:
+  # push:
+  #   branches:
+  #     - main
+
+jobs:
+  terraform-destroy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0  # Use the appropriate Terraform version
+
+      # Step 3: Set up AWS OIDC credentials
+      - name: Set up AWS OIDC credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ROLE_NAME>  # Replace with your IAM role ARN
+          aws-region: ${{ secrets.AWS_REGION }}  # Set region as a secret or hard-code it
+          role-session-name: GitHubActionsOIDC
+
+      # Step 4: Terraform Init
+      - name: Terraform Init
+        run: terraform init
+
+      # Step 5: Terraform Plan (Destroy)
+      - name: Terraform Plan (Destroy)
+        run: terraform plan -destroy -out=tfplan.out
+
+      # Step 6: Terraform Apply (Destroy)
+      - name: Terraform Apply (Destroy)
+        run: terraform apply "tfplan.out"
+
+      # Step 7: Terraform Destroy (Auto-approve)
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
+
+      # Optional: Terraform Output
+      - name: Terraform Output
+        run: terraform output
