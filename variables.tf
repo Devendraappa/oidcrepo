@@ -15,7 +15,7 @@ variable "private_subnet_count" {
 }
 
 variable "availability_zones" {
-  default = ["us-east-1a", "us-east-1b"]
+  default = ["ap-south-1a", "ap-south-1b"]
 }
 
 variable "ami_id" {
@@ -31,7 +31,7 @@ variable "ec2_instance_count" {
 }
 
 variable "key_name" {
-  default = "your-key-pair-name"
+  default = "test"
 }
 
 variable "project_name" {
