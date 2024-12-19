@@ -31,7 +31,7 @@ variable "ec2_instance_count" {
 }
 
 variable "key_name" {
-  default = "your-key-pair-name"
+  default = "desktop"
 }
 
 variable "project_name" {
