@@ -130,16 +130,16 @@ resource "aws_security_group" "web_sg" {
 
 # EC2 Instances
 resource "aws_instance" "web" {
-  count         = var.ec2_instance_count
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  subnet_id     = aws_subnet.public[count.index].id
-  key_name      = var.key_name
-  security_groups = [aws_security_group.web_sg.name]
+  count         = 2
+  ami           = "ami-0fd05997b4dff7aac"  
+  instance_type = "t2.micro"
+  subnet_id     = element(aws_subnet.private_subnet.*.id, count.index)
+  key_name      = aws_key_pair.my_key_pair.key_name
 
-  user_data = file("user_data.sh")
+  # Use vpc_security_group_ids instead of security_groups
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
 
   tags = {
-    Name = "${var.project_name}-web-${count.index}"
+    Name = "web-instance-${count.index + 1}"
   }
-}
+ }
