@@ -7,11 +7,11 @@ variable "vpc_cidr" {
 }
 
 variable "public_subnet_count" {
-  default = 2
+  default = 1
 }
 
 variable "private_subnet_count" {
-  default = 2
+  default = 1
 }
 
 variable "availability_zones" {
@@ -27,7 +27,7 @@ variable "instance_type" {
 }
 
 variable "ec2_instance_count" {
-  default = 2
+  default = 1
 }
 
 variable "key_name" {
